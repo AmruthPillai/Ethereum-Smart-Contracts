@@ -1,0 +1,15 @@
+{
+  "name": "ethereum-web",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "ethereumjs-testrpc": "^6.0.1",
+    "web3": "github:ethereum/web3.js"
+  }
+}
