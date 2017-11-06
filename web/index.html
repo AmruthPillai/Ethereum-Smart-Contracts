@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Document</title>
+  <title>NotSoSmartContract</title>
 
   <link rel="stylesheet" type="text/css" href="main.css">
 
@@ -43,9 +43,21 @@
 
     web3.eth.defaultAccount = web3.eth.accounts[0];
 
-    var NotSoSmartContract = web3.eth.contract('<abi-key>');
-    var Contract = NotSoSmartContract.at('<address>');
-    console.log(Contract);
+    var Contract = web3.eth.contract('<abi-key>');
+    var NotSoSmartContract = Contract.at('<address>');
+    console.log(NotSoSmartContract);
+
+    NotSoSmartContract.getInstructor(function(error, result) {
+      if (!error) {
+        $("#instructor").html(result[0] + ' (' + result[1] + ' years old)');
+        console.log(result);
+      } else
+        console.error(error);
+    });
+
+    $("#button").click(function() {
+      NotSoSmartContract.setInstructor($("#name").val(), $("#age").val());
+    });
   </script>
 
 </body>
