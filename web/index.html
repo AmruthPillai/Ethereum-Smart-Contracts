@@ -16,14 +16,21 @@
 <body>
   <div class="container">
 
-    <h1>Details</h1>
-    <p>Owner Address: <span id="owner"></span></p>
-    <h2 id="details"></h2>
+    <h1>Instructors</h1>
+    <span id="countIns"></span>
+
+    <h2 id="instructor"></h2>
+    <span id="insTrans"></span>
+
+    <hr>
 
     <img id="loader" src="https://loading.io/spinners/double-ring/lg.double-ring-spinner.gif">
 
-    <label for="name" class="col-lg-2 control-label">Name</label>
-    <input id="name" type="text">
+    <label for="fName" class="col-lg-2 control-label">First Name</label>
+    <input id="fName" type="text">
+
+    <label for="lName" class="col-lg-2 control-label">Last Name</label>
+    <input id="lName" type="text">
 
     <label for="age" class="col-lg-2 control-label">Age</label>
     <input id="age" type="text">
@@ -46,36 +53,40 @@
 
     var Contract = web3.eth.contract([{"constant":true,"inputs":[{"name":"_address","type":"address"}],"name":"getInstructor","outputs":[{"name":"","type":"bytes16"},{"name":"","type":"bytes16"},{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"getInstructors","outputs":[{"name":"","type":"address[]"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_address","type":"address"},{"name":"_fName","type":"bytes16"},{"name":"_lName","type":"bytes16"},{"name":"_age","type":"uint256"}],"name":"setInstructor","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"countInstructors","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"}],"name":"instructorAccounts","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"anonymous":false,"inputs":[{"indexed":false,"name":"fName","type":"bytes16"},{"indexed":false,"name":"lName","type":"bytes16"},{"indexed":false,"name":"age","type":"uint256"}],"name":"InstructorInfo","type":"event"}]);
 
-    var NotSoSmartContract = Contract.at('0xccf27286e30e48fb84c7eda7cbb75abeb61d9785');
+    var Courses = Contract.at('0xc9e97d137391ba0a2ac1bf42611059d54800c240');
 
-    // NotSoSmartContract.getDetails(function(error, result) {
-    //   if (!error) {
-    //     $('#details').html(result[0] + ' (' + result[1] + ' years old)');
-    //   } else {
-    //     console.log(error);
-    //   }
-    // });
+    var instructorEvent = Courses.InstructorInfo({}, 'latest');
 
-    var detailsEvent = NotSoSmartContract.Details();
-
-    detailsEvent.watch(function(error, result) {
-      $('#loader').hide();
-
+    instructorEvent.watch(function(error, result) {
       if (!error) {
-        $('#details').html(result.args.name + ' (' + result.args.age + ' years old)')
+        if (result.blockHash != $('#insTrans').html()) {
+          $('#loader').hide();
+        }
+
+        $('#insTrans').html('Block hash: ' + result.blockHash);
+        $('#details').html(web3.toAscii(result.args.fName) + ' ' + web3.toAscii(result.args.lName) + ' (' + result.args.age + ' years old)')
       } else {
+        $('#loader').hide();
+
         console.log(error);
       }
     });
 
+    Courses.countInstructors((err, res) => {
+      if (res) {
+        $('#countIns').html(res.c + ' Instructors');
+      }
+    });
+
     $('#button').click(function() {
-      NotSoSmartContract.setDetails($('#name').val(), $('#age').val(), (err, res) => {
+      $('#loader').show();
+
+      Courses.setInstructor(web3.eth.defaultAccount, $('#fName').val(), $('#lName').val(), $('#age').val(), (err, res) => {
         if (err) {
           $('#loader').hide();
           console.log('Oh, no!');
         }
       });
-      $('#loader').show();
     });
   </script>
 
