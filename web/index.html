@@ -17,8 +17,10 @@
   <div class="container">
 
     <h1>Details</h1>
-
+    <p>Owner Address: <span id="owner"></span></p>
     <h2 id="details"></h2>
+
+    <img id="loader" src="https://loading.io/spinners/double-ring/lg.double-ring-spinner.gif">
 
     <label for="name" class="col-lg-2 control-label">Name</label>
     <input id="name" type="text">
@@ -42,13 +44,25 @@
 
     web3.eth.defaultAccount = web3.eth.accounts[0];
 
-    var Contract = web3.eth.contract([{"constant":false,"inputs":[{"name":"_firstName","type":"string"},{"name":"_age","type":"uint256"}],"name":"setDetails","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"getDetails","outputs":[{"name":"","type":"string"},{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"}]);
+    var Contract = web3.eth.contract([{"constant":false,"inputs":[{"name":"_firstName","type":"string"},{"name":"_age","type":"uint256"}],"name":"setDetails","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"getDetails","outputs":[{"name":"","type":"string"},{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"anonymous":false,"inputs":[{"indexed":false,"name":"name","type":"string"},{"indexed":false,"name":"age","type":"uint256"}],"name":"Details","type":"event"}]);
 
-    var NotSoSmartContract = Contract.at('0x4744a0b025be3262f8dae5313dac5cc52661ba50');
+    var NotSoSmartContract = Contract.at('0x55cba974a9e691940f84e82bfd407f17e13d7a52');
 
-    NotSoSmartContract.getDetails(function(error, result) {
+    // NotSoSmartContract.getDetails(function(error, result) {
+    //   if (!error) {
+    //     $('#details').html(result[0] + ' (' + result[1] + ' years old)');
+    //   } else {
+    //     console.log(error);
+    //   }
+    // });
+
+    var detailsEvent = NotSoSmartContract.Details();
+
+    detailsEvent.watch(function(error, result) {
+      $('#loader').hide();
+
       if (!error) {
-        $('#details').html(result[0] + ' (' + result[1] + ' years old)');
+        $('#details').html(result.args.name + ' (' + result.args.age + ' years old)')
       } else {
         console.log(error);
       }
@@ -56,6 +70,7 @@
 
     $('#button').click(function() {
       NotSoSmartContract.setDetails($('#name').val(), $('#age').val());
+      $('#loader').show();
     });
   </script>
 

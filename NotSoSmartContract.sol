@@ -11,14 +11,22 @@ contract NotSoSmartContract {
 
     // Every contract has a constructor they can use
     // They must have the same name as the contract
-     function NotSoSmartContract() public {
-        age = 18;
-    }
+    /* function NotSoSmartContract() public {
+        age = 22;
+    } */
+
+    // Used to create events in order to send notice of updates
+    event Details(
+        string name,
+        uint age
+    );
 
     // Function to Set Details, to original variables
     function setDetails(string _firstName, uint _age) public {
         firstName = _firstName;
         age = _age;
+
+        Details(_firstName, _age);
     }
 
     // Function to Get Details, returns values
