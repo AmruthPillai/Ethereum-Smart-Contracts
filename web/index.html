@@ -44,9 +44,9 @@
 
     web3.eth.defaultAccount = web3.eth.accounts[0];
 
-    var Contract = web3.eth.contract([{"constant":false,"inputs":[{"name":"_firstName","type":"string"},{"name":"_age","type":"uint256"}],"name":"setDetails","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"getDetails","outputs":[{"name":"","type":"string"},{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"inputs":[],"payable":false,"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":false,"name":"name","type":"string"},{"indexed":false,"name":"age","type":"uint256"}],"name":"Details","type":"event"}]);
+    var Contract = web3.eth.contract([{"constant":true,"inputs":[{"name":"_address","type":"address"}],"name":"getInstructor","outputs":[{"name":"","type":"bytes16"},{"name":"","type":"bytes16"},{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"getInstructors","outputs":[{"name":"","type":"address[]"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_address","type":"address"},{"name":"_fName","type":"bytes16"},{"name":"_lName","type":"bytes16"},{"name":"_age","type":"uint256"}],"name":"setInstructor","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"countInstructors","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"}],"name":"instructorAccounts","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"anonymous":false,"inputs":[{"indexed":false,"name":"fName","type":"bytes16"},{"indexed":false,"name":"lName","type":"bytes16"},{"indexed":false,"name":"age","type":"uint256"}],"name":"InstructorInfo","type":"event"}]);
 
-    var NotSoSmartContract = Contract.at('0xad7f111d1085d153cabd384c3686b20a3875b62c');
+    var NotSoSmartContract = Contract.at('0xccf27286e30e48fb84c7eda7cbb75abeb61d9785');
 
     // NotSoSmartContract.getDetails(function(error, result) {
     //   if (!error) {
