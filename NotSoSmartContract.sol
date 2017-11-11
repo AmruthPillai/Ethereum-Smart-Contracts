@@ -15,14 +15,14 @@ contract NotSoSmartContract {
         age = 18;
     }
 
-    // Function to Set Instructor Information, to original variables
-    function setInstructor(string _firstName, uint _age) public {
+    // Function to Set Details, to original variables
+    function setDetails(string _firstName, uint _age) public {
         firstName = _firstName;
         age = _age;
     }
 
-    // Function to Get Instructor Information, returns values
-    function getInstructor() public constant returns (string, uint) {
+    // Function to Get Details, returns values
+    function getDetails() public constant returns (string, uint) {
         return (firstName, age);
     }
 

@@ -5,29 +5,28 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>NotSoSmartContract</title>
+  <title>Not So Smart Contract</title>
 
   <link rel="stylesheet" type="text/css" href="main.css">
 
-  <script src="./node_modules/web3/dist/web3.min.js"></script>
+  <script src="../node_modules/web3/dist/web3.min.js"></script>
 
 </head>
 
 <body>
   <div class="container">
 
-    <h1>Instructor</h1>
+    <h1>Details</h1>
 
-    <h2 id="instructor"></h2>
+    <h2 id="details"></h2>
 
-    <label for="name" class="col-lg-2 control-label">Instructor Name</label>
+    <label for="name" class="col-lg-2 control-label">Name</label>
     <input id="name" type="text">
 
-    <label for="name" class="col-lg-2 control-label">Instructor Age</label>
+    <label for="age" class="col-lg-2 control-label">Age</label>
     <input id="age" type="text">
 
-    <button id="button">Update Instructor</button>
-
+    <button id="button">Update Details</button>
 
   </div>
 
@@ -43,20 +42,20 @@
 
     web3.eth.defaultAccount = web3.eth.accounts[0];
 
-    var Contract = web3.eth.contract('<abi-key>');
-    var NotSoSmartContract = Contract.at('<address>');
-    console.log(NotSoSmartContract);
+    var Contract = web3.eth.contract([{"constant":false,"inputs":[{"name":"_firstName","type":"string"},{"name":"_age","type":"uint256"}],"name":"setDetails","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"getDetails","outputs":[{"name":"","type":"string"},{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"}]);
 
-    NotSoSmartContract.getInstructor(function(error, result) {
+    var NotSoSmartContract = Contract.at('0x4744a0b025be3262f8dae5313dac5cc52661ba50');
+
+    NotSoSmartContract.getDetails(function(error, result) {
       if (!error) {
-        $("#instructor").html(result[0] + ' (' + result[1] + ' years old)');
-        console.log(result);
-      } else
-        console.error(error);
+        $('#details').html(result[0] + ' (' + result[1] + ' years old)');
+      } else {
+        console.log(error);
+      }
     });
 
-    $("#button").click(function() {
-      NotSoSmartContract.setInstructor($("#name").val(), $("#age").val());
+    $('#button').click(function() {
+      NotSoSmartContract.setDetails($('#name').val(), $('#age').val());
     });
   </script>
 
