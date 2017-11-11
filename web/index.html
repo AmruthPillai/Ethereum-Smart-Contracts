@@ -44,9 +44,9 @@
 
     web3.eth.defaultAccount = web3.eth.accounts[0];
 
-    var Contract = web3.eth.contract([{"constant":false,"inputs":[{"name":"_firstName","type":"string"},{"name":"_age","type":"uint256"}],"name":"setDetails","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"getDetails","outputs":[{"name":"","type":"string"},{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"anonymous":false,"inputs":[{"indexed":false,"name":"name","type":"string"},{"indexed":false,"name":"age","type":"uint256"}],"name":"Details","type":"event"}]);
+    var Contract = web3.eth.contract([{"constant":false,"inputs":[{"name":"_firstName","type":"string"},{"name":"_age","type":"uint256"}],"name":"setDetails","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"getDetails","outputs":[{"name":"","type":"string"},{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"inputs":[],"payable":false,"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":false,"name":"name","type":"string"},{"indexed":false,"name":"age","type":"uint256"}],"name":"Details","type":"event"}]);
 
-    var NotSoSmartContract = Contract.at('0x55cba974a9e691940f84e82bfd407f17e13d7a52');
+    var NotSoSmartContract = Contract.at('0xad7f111d1085d153cabd384c3686b20a3875b62c');
 
     // NotSoSmartContract.getDetails(function(error, result) {
     //   if (!error) {
@@ -69,7 +69,12 @@
     });
 
     $('#button').click(function() {
-      NotSoSmartContract.setDetails($('#name').val(), $('#age').val());
+      NotSoSmartContract.setDetails($('#name').val(), $('#age').val(), (err, res) => {
+        if (err) {
+          $('#loader').hide();
+          console.log('Oh, no!');
+        }
+      });
       $('#loader').show();
     });
   </script>
